@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu - Breathless</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="Breathe.png">
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background: black;
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#logo {
+    width: 20%;
+    opacity: 0;
+    animation: introFade 0.5s ease forwards;
+    margin-top: 40px;
+}
+
+@keyframes introFade {
+    from { opacity: 0; transform: scale(1.08); filter: blur(6px); }
+    to   { opacity: 1; transform: scale(1);    filter: blur(0); }
+}
+
+div.particle {
+    position: absolute;
+    width: 1px;
+    background: linear-gradient(to top, rgba(255,255,255,0.15), transparent);
+    animation: rise var(--dur) ease-in var(--delay) infinite;
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes rise {
+    0%   { opacity: 0; height: 0; transform: translateY(0); }
+    15%  { opacity: 1; }
+    80%  { opacity: 0.25; }
+    100% { opacity: 0; height: 55px; transform: translateY(-80px); }
+}
+
+#oxygen {
+    margin-top: 16px;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: introFade 0.5s ease 0.3s forwards;
+}
+
+#oxygen span { color: #88ccff; font-weight: 400; }
+
+#nav {
+    display: flex;
+    gap: 16px;
+    margin-top: 30px;
+    opacity: 0;
+    animation: introFade 0.5s ease 0.5s forwards;
+}
+
+.nav-btn {
+    background: none;
+    border: 0.5px solid rgba(255,255,255,0.3);
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    padding: 10px 30px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.nav-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.7); }
+.nav-btn.active { border-color: white; background: rgba(255,255,255,0.06); }
+
+#panels {
+    width: 70%;
+    margin-top: 30px;
+    opacity: 0;
+    animation: introFade 0.5s ease 0.6s forwards;
+    padding-bottom: 40px;
+}
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+#play-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-top: 20px;
+}
+
+#play-btn {
+    background: none;
+    border: 0.5px solid rgba(255,255,255,0.5);
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    padding: 16px 60px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+#play-btn:hover { background: rgba(255,255,255,0.08); border-color: white; transform: scale(1.03); }
+
+.controls {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.35;
+    margin-top: 8px;
+}
+
+#shop-panel { display: none; }
+
+.shop-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.shop-item {
+    border: 0.5px solid rgba(255,255,255,0.15);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: border-color 0.2s;
+}
+
+.shop-item:hover { border-color: rgba(255,255,255,0.4); }
+
+.item-name {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+.item-desc {
+    font-size: 11px;
+    opacity: 0.45;
+    letter-spacing: 1px;
+    line-height: 1.6;
+}
+
+.item-level {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #88ccff;
+}
+
+.item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+}
+
+.item-cost { font-size: 11px; letter-spacing: 2px; color: #88ccff; }
+
+.buy-btn {
+    background: none;
+    border: 0.5px solid rgba(255,255,255,0.25);
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.buy-btn:hover { background: rgba(255,255,255,0.08); border-color: white; }
+.buy-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+
+.controls-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    opacity: 0.6;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    max-width: 420px;
+    text-align: center;
+}
+
+.controls-title {
+    font-size: 10px;
+    letter-spacing: 4px;
+    opacity: 0.5;
+    margin-bottom: 4px;
+}
+
+.controls-row {
+    line-height: 1.8;
+}
+
+.controls-row span {
+    color: white;
+    opacity: 1;
+    margin-right: 8px;
+    font-weight: 400;
+}
+
+.controls-powerups {
+    display: flex;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.pu-pill {
+    font-size: 10px;
+    letter-spacing: 3px;
+    border: 0.5px solid;
+    padding: 4px 12px;
+}
+</style>
+</head>
+
+<body>
+
+<img id="logo" src="BreathlessLogo2.png" alt="Breathless Logo">
+<div id="oxygen">Oxygen &nbsp;<span id="o2-count">0</span> O₂</div>
+
+<div id="nav">
+    <button class="nav-btn active" onclick="showPanel('play', this); playMenuSound()">Play</button>
+    <button class="nav-btn" onclick="showPanel('shop', this); playMenuSound()">Shop</button>
+</div>
+
+<div id="panels">
+
+    <div id="play-panel" class="panel active">
+        <button id="play-btn" onclick="startGame(); playMenuSound()">Play</button>
+        <div class="controls-block">
+            <div class="controls-title">How to play</div>
+            <div class="controls-row">Survive long enough to catch your breath and clear the level</div>
+            <div class="controls-row"><span>Move</span> WASD</div>
+            <div class="controls-row"><span>Dash</span> Shift</div>
+            <div class="controls-row"><span>Shoot</span> Hold Mouse</div>
+            <div class="controls-row">Upgrade your character between levels in the shop</div>
+            <div class="controls-row">Pick up powerup orbs dropped by enemies</div>
+            <div class="controls-powerups">
+                <div class="pu-pill" style="color:#ff6644; border-color:#ff6644;">⬤ Shotgun</div>
+                <div class="pu-pill" style="color:#ffdd44; border-color:#ffdd44;">⬤ Speed</div>
+                <div class="pu-pill" style="color:#88ccff; border-color:#88ccff;">⬤ Shield</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="shop-panel" class="panel">
+        <div class="shop-grid" id="shop-grid"></div>
+    </div>
+
+</div>
+
+<script>
+// mist particles
+for (let i = 0; i < 22; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = (20 + Math.random() * 60) + '%';
+    p.style.top = '30%';
+    p.style.setProperty('--dur', (3.5 + Math.random() * 3.5) + 's');
+    p.style.setProperty('--delay', (Math.random() * 6) + 's');
+    document.body.appendChild(p);
+}
+
+// upgrade definitions
+const UPGRADES = [
+    {
+        id: 'bulletSpeed',
+        name: 'Faster Bullets',
+        desc: 'Increases bullet speed by 30% per level.',
+        maxLevel: 3,
+        costs: [50, 80, 120],
+    },
+    {
+        id: 'bulletSize',
+        name: 'Bigger Bullets',
+        desc: 'Increases bullet radius by 4 per level.',
+        maxLevel: 3,
+        costs: [40, 70, 100],
+    },
+    {
+        id: 'dashCooldown',
+        name: 'Dash Cooldown',
+        desc: 'Reduces dash cooldown by 150ms per level.',
+        maxLevel: 3,
+        costs: [60, 90, 130],
+    },
+    {
+        id: 'moveSpeed',
+        name: 'Movement Speed',
+        desc: 'Increases max movement speed by 2 per level.',
+        maxLevel: 3,
+        costs: [45, 75, 110],
+    },
+    {
+        id: 'shotgunDuration',
+        name: 'Shotgun Duration',
+        desc: 'Increases shotgun powerup duration by 1s per level.',
+        maxLevel: 10,
+        costs: Array.from({length: 10}, (_, i) => 30 + i * 20),
+    },
+    {
+        id: 'shieldDuration',
+        name: 'Shield Duration',
+        desc: 'Increases shield powerup duration by 1s per level.',
+        maxLevel: 10,
+        costs: Array.from({length: 10}, (_, i) => 40 + i * 20),
+    },
+    {
+        id: 'speedDuration',
+        name: 'Speed Duration',
+        desc: 'Increases speed boost duration by 1s per level.',
+        maxLevel: 10,
+        costs: Array.from({length: 10}, (_, i) => 30 + i * 20),
+    },
+];
+
+// load from sessionStorage
+let oxygen = parseInt(sessionStorage.getItem('totalOxygen') || '0');
+document.getElementById('o2-count').textContent = oxygen;
+
+function getUpgradeLevel(id) {
+    return parseInt(sessionStorage.getItem('upgrade_' + id) || '0');
+}
+
+function setUpgradeLevel(id, level) {
+    sessionStorage.setItem('upgrade_' + id, level);
+}
+
+function buildShop() {
+    const grid = document.getElementById('shop-grid');
+    grid.innerHTML = '';
+
+    UPGRADES.forEach(u => {
+        const level = getUpgradeLevel(u.id);
+        const maxed = level >= u.maxLevel;
+        const cost  = maxed ? null : u.costs[level];
+
+        const item = document.createElement('div');
+        item.className = 'shop-item';
+        item.innerHTML = `
+            <div class="item-name">${u.name}</div>
+            <div class="item-desc">${u.desc}</div>
+            <div class="item-level">Level ${level} / ${u.maxLevel}</div>
+            <div class="item-footer">
+                <div class="item-cost">${maxed ? 'Maxed' : cost + ' O₂'}</div>
+                <button class="buy-btn" ${maxed || oxygen < cost ? 'disabled' : ''} onclick="buy('${u.id}', ${cost})">
+                    ${maxed ? 'Owned' : 'Buy'}
+                </button>
+            </div>
+        `;
+        grid.appendChild(item);
+    });
+}
+
+function buy(id, cost) {
+    if (oxygen < cost) return;
+    oxygen -= cost;
+    sessionStorage.setItem('totalOxygen', oxygen);
+    document.getElementById('o2-count').textContent = oxygen;
+    setUpgradeLevel(id, getUpgradeLevel(id) + 1);
+    playShopSound();
+    buildShop();
+}
+
+function showPanel(name, btn) {
+    document.querySelectorAll('.panel').forEach(p => {
+        p.style.display = 'none';
+        p.classList.remove('active');
+    });
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+    const panel = document.getElementById(name + '-panel');
+    panel.style.display = name === 'shop' ? 'block' : 'flex';
+    panel.classList.add('active');
+    btn.classList.add('active');
+
+    if (name === 'shop') buildShop();
+}
+
+function startGame() {
+    sessionStorage.setItem('currentLevel', sessionStorage.getItem('currentLevel') || '0');
+    window.location.href = 'game.html';
+}
+
+// audio
+const audio = new Audio('main.mp3');
+audio.loop = true;
+audio.volume = 0;
+
+function fadeAudioIn() {
+    const fade = setInterval(() => {
+        if (audio.volume < 0.59) {
+            audio.volume = Math.min(audio.volume + 0.01, 0.6);
+        } else {
+            clearInterval(fade);
+        }
+    }, 50);
+}
+
+if (sessionStorage.getItem('audioReady')) {
+    audio.play().then(fadeAudioIn).catch(() => {});
+} else {
+    document.addEventListener('click', () => {
+        if (audio.paused) audio.play().then(fadeAudioIn);
+    }, { once: true });
+}
+
+
+
+function playMenuSound() {
+    const s = new Audio('menu.mp3');
+    s.volume = 0.4;
+    s.play().catch(() => {});
+}
+
+function playShopSound() {
+    const s = new Audio('shop.mp3');
+    s.volume = 0.4;
+    s.play().catch(() => {});
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breathless</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="Breathe.png">
+
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: black;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#cb {
+    width: 10%;
+    opacity: 0;
+    animation: cbFade 2s ease forwards;
+    position: absolute;
+    top: 10vh;
+}
+
+@keyframes cbFade {
+    from {
+        opacity: 0;
+        transform: scale(1.08);
+        filter: blur(6px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+#logo {
+    width: 60%;
+    opacity: 0;
+    animation: introFade 2s ease forwards;
+}
+
+
+@keyframes introFade {
+    from {
+        opacity: 0;
+        transform: scale(1.08);
+        filter: blur(6px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+/* mist particles */
+.particle {
+    position: absolute;
+    width: 1px;
+    background: linear-gradient(to top, rgba(255,255,255,0.15), transparent);
+    animation: rise var(--dur) ease-in var(--delay) infinite;
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes rise {
+    0%   { opacity: 0; height: 0; transform: translateY(0); }
+    15%  { opacity: 1; }
+    80%  { opacity: 0.25; }
+    100% { opacity: 0; height: 55px; transform: translateY(-80px); }
+}
+
+#hint {
+    position: absolute;
+    bottom: 10vh;
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    letter-spacing: 3px;
+    font-size: 24px;
+    text-transform: uppercase;
+    animation: hintPulse 3s ease-in-out 3s infinite;
+    opacity: 0;
+}
+
+@keyframes hintPulse {
+    0%, 100% { opacity: 0; }
+    50%       { opacity: 0.45; }
+}
+</style>
+</head>
+
+<body onclick="goMenu()">
+
+<img id="cb" src="CBLogo.png" alt="CB Logo">
+<img id="logo" src="BreathlessLogo2.png" alt="Breathless Logo">
+<div id="hint">CLICK ANYWHERE</div>
+
+<script>
+// generate mist particles across the logo area
+for (let i = 0; i < 22; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = (20 + Math.random() * 60) + '%';
+    p.style.bottom = '48%';
+    p.style.setProperty('--dur', (3.5 + Math.random() * 3.5) + 's');
+    p.style.setProperty('--delay', (Math.random() * 6) + 's');
+    document.body.appendChild(p);
+}
+
+function goMenu() {
+    sessionStorage.setItem('audioReady', 'true');
+    window.location.href = "menu.html";
+}
+
+const cb = document.getElementById('cb');
+cb.addEventListener('animationend', () => {
+    cb.style.opacity = '1';
+});
+</script>
+
+</body>
+</html>
