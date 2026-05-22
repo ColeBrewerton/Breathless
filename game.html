@@ -584,13 +584,13 @@ function update() {
         spawnRate = Math.max(levelData.spawnInterval * 0.5, spawnRate - 10);
     }
 
-    if (keys["w"]) player.vy -= player.acceleration;
-    if (keys["s"]) player.vy += player.acceleration;
-    if (keys["a"]) player.vx -= player.acceleration;
-    if (keys["d"]) player.vx += player.acceleration;
+if (keys["w"]) player.vy -= player.acceleration * (delta * 120);
+if (keys["s"]) player.vy += player.acceleration * (delta * 120);
+if (keys["a"]) player.vx -= player.acceleration * (delta * 120);
+if (keys["d"]) player.vx += player.acceleration * (delta * 120);
 
     // apply speedboost to max speed
-    const baseSpeed = (5    + moveSpeedLevel * 2) * getSpeedScale();
+    const baseSpeed = (10    + moveSpeedLevel * 2) * getSpeedScale();
     player.maxSpeed = powerups.speedboost.active ? baseSpeed * 2 : baseSpeed;
 
     player.vx = Math.max(-player.maxSpeed, Math.min(player.maxSpeed, player.vx));
@@ -626,8 +626,8 @@ function update() {
         }
     }
 
-    player.vx *= player.friction;
-    player.vy *= player.friction;
+    player.vx *= Math.pow(player.friction, delta * 120);
+    player.vy *= Math.pow(player.friction, delta * 120);
     player.x  += player.vx;
     player.y  += player.vy;
 
@@ -653,8 +653,8 @@ function update() {
 
     for (let i = bullets.length - 1; i >= 0; i--) {
         const b = bullets[i];
-        b.x += b.vx;
-        b.y += b.vy;
+        b.x += b.vx * (delta * 120);
+        b.y += b.vy * (delta * 120);
         if (b.x < -100 || b.x > canvas.width + 100 || b.y < -100 || b.y > canvas.height + 100) {
             bullets.splice(i, 1);
         }
@@ -731,8 +731,8 @@ function update() {
     for (let i = enemies.length - 1; i >= 0; i--) {
         const enemy = enemies[i];
         const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x);
-        enemy.x += Math.cos(angle) * enemy.speed;
-        enemy.y += Math.sin(angle) * enemy.speed;
+        enemy.x += Math.cos(angle) * enemy.speed * (delta * 120);
+        enemy.y += Math.sin(angle) * enemy.speed * (delta * 120);
 
         // separation — push enemies apart if overlapping
         for (let k = 0; k < enemies.length; k++) {
