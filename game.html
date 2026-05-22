@@ -590,7 +590,7 @@ function update() {
     if (keys["d"]) player.vx += player.acceleration;
 
     // apply speedboost to max speed
-    const baseSpeed = (10     + moveSpeedLevel * 2) * getSpeedScale();
+    const baseSpeed = (5    + moveSpeedLevel * 2) * getSpeedScale();
     player.maxSpeed = powerups.speedboost.active ? baseSpeed * 2 : baseSpeed;
 
     player.vx = Math.max(-player.maxSpeed, Math.min(player.maxSpeed, player.vx));
