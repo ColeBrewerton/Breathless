@@ -138,14 +138,6 @@
         transition: opacity 0.3s;
     }
 
-    #shockwave {
-        position: fixed;
-        border-radius: 50%;
-        border: 2px solid white;
-        pointer-events: none;
-        z-index: 14;
-        opacity: 0;
-    }
 </style>
 </head>
 <body>
@@ -164,7 +156,6 @@
 <div id="powerupDisplay"></div>
 
 <div id="breathText">BREATHE</div>
-<div id="shockwave"></div>
 
 <div id="pauseMenu" class="overlay">
     <h2>Paused</h2>
@@ -428,7 +419,6 @@ function triggerBreath() {
     paused = true;
 
     const breathText = document.getElementById('breathText');
-    const shockwave  = document.getElementById('shockwave');
 
     // fade in text
     breathText.style.transition = 'opacity 0.6s ease';
@@ -568,7 +558,7 @@ function update() {
     if (!player.alive || breathAnimating) return;
 
     const now   = Date.now();
-    const delta = (now - lastTick) / 1000;
+    const delta = Math.min((now - lastTick) / 1000, 0.05);
     lastTick = now;
 
     timeRemaining = Math.max(0, timeRemaining - delta);
