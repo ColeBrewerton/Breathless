@@ -584,10 +584,10 @@ function update() {
         spawnRate = Math.max(levelData.spawnInterval * 0.5, spawnRate - 10);
     }
 
-if (keys["w"]) player.vy -= player.acceleration * (delta * 120);
-if (keys["s"]) player.vy += player.acceleration * (delta * 120);
-if (keys["a"]) player.vx -= player.acceleration * (delta * 120);
-if (keys["d"]) player.vx += player.acceleration * (delta * 120);
+    if (keys["w"]) player.vy -= player.acceleration * (delta * 120);
+    if (keys["s"]) player.vy += player.acceleration * (delta * 120);
+    if (keys["a"]) player.vx -= player.acceleration * (delta * 120);
+    if (keys["d"]) player.vx += player.acceleration * (delta * 120);
 
     // apply speedboost to max speed
     const baseSpeed = (10    + moveSpeedLevel * 2) * getSpeedScale();
@@ -628,8 +628,8 @@ if (keys["d"]) player.vx += player.acceleration * (delta * 120);
 
     player.vx *= Math.pow(player.friction, delta * 120);
     player.vy *= Math.pow(player.friction, delta * 120);
-    player.x  += player.vx;
-    player.y  += player.vy;
+    player.x  += player.vx * (delta * 120);
+    player.y  += player.vy * (delta * 120);
 
     if (player.x < player.radius) { player.x = player.radius; player.vx = 0; }
     if (player.x > canvas.width  - player.radius) { player.x = canvas.width  - player.radius; player.vx = 0; }
