@@ -465,11 +465,25 @@ function fadeAudioIn() {
     }, 50);
 }
 
+const savedVolume = parseFloat(sessionStorage.getItem('gameVolume') || '0.7');
+
+function fadeMenuAudioIn() {
+    const target = savedVolume * 0.6;
+    if (target === 0) { audio.volume = 0; return; }
+    const fade = setInterval(() => {
+        if (audio.volume < target) {
+            audio.volume = Math.min(audio.volume + 0.01, target);
+        } else {
+            clearInterval(fade);
+        }
+    }, 50);
+}
+
 if (sessionStorage.getItem('audioReady')) {
-    audio.play().then(fadeAudioIn).catch(() => {});
+    audio.play().then(fadeMenuAudioIn).catch(() => {});
 } else {
     document.addEventListener('click', () => {
-        if (audio.paused) audio.play().then(fadeAudioIn);
+        if (audio.paused) audio.play().then(fadeMenuAudioIn);
     }, { once: true });
 }
 
@@ -487,7 +501,6 @@ function playShopSound() {
     s.play().catch(() => {});
 }
 
-const savedVolume = sessionStorage.getItem('gameVolume') || '0.7';
 document.getElementById('volumeSlider').value = savedVolume;
 
 document.getElementById('volumeSlider').addEventListener('input', (e) => {
