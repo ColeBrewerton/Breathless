@@ -310,6 +310,7 @@ const oxyDisplay      = document.getElementById("oxygenDisplay");
 const gameOverScreen  = document.getElementById("gameOver");
 const levelCompleteScreen = document.getElementById("levelComplete");
 const powerupDisplay  = document.getElementById("powerupDisplay");
+const masterVolume = parseFloat(sessionStorage.getItem('gameVolume') || '0.7');
 
 levelDisplay.textContent = "LEVEL: " + (currentLevel + 1);
 oxyDisplay.textContent   = "O₂: " + totalOxygen;
@@ -324,7 +325,7 @@ function shootBullet() {
     lastShot = now;
 
     const shootSound = new Audio('shoot.mp3');
-    shootSound.volume = 0.4;
+    shootSound.volume = masterVolume * 0.4;
     shootSound.play().catch(() => {});
 
 
@@ -567,7 +568,7 @@ function update() {
 
     if (timeRemaining <= 0) {
         const levelUpSound = new Audio('levelUp.mp3');
-        levelUpSound.volume = 0.8;
+        levelUpSound.volume = masterVolume * 0.8;
         levelUpSound.play().catch(() => {});
         triggerBreath();
         return;
@@ -672,17 +673,17 @@ function update() {
                 pu.timer  = Math.min(pu.timer + pu.duration, pu.maxStack);
                 if (d.type === 'invincibility') {
                     const shieldSound = new Audio('shield.mp3');
-                    shieldSound.volume = 0.8;
+                    shieldSound.volume = masterVolume * 0.8;
                     shieldSound.play().catch(() => {});
                 }   
                  if (d.type === 'shotgun') {
                     const shotgunSound = new Audio('shotgun.mp3');
-                    shotgunSound.volume = 0.5;
+                    shotgunSound.volume = masterVolume * 0.5;
                     shotgunSound.play().catch(() => {});
                 }
                 if (d.type === 'speedboost') {
                     const speedSound = new Audio('speed.mp3');
-                    speedSound.volume = 0.8;
+                    speedSound.volume = masterVolume * 0.8;
                     speedSound.play().catch(() => {});
                 }
             }
@@ -760,7 +761,7 @@ function update() {
             spawnPlayerDeath();
             muteMusic();
             const deathSound = new Audio('playerDeath.mp3');
-            deathSound.volume = 1;
+            deathSound.volume = masterVolume * 1;
             deathSound.play().catch(() => {});
             document.getElementById('finalScore').textContent =
                 'Level ' + (currentLevel + 1) + ' — ' + Math.floor(levelData.survive - timeRemaining) + 's survived';
@@ -772,7 +773,7 @@ function update() {
             if (Math.hypot(b.x - enemy.x, b.y - enemy.y) < b.radius + enemy.radius) {
                 spawnDrop(enemy.x, enemy.y, enemy.radius);
                 const deathSound = new Audio('enemyDeath.mp3');
-                deathSound.volume = 0.4;
+                deathSound.volume = masterVolume * 0.4;
                 deathSound.play().catch(() => {});
                 enemies.splice(i, 1);
                 bullets.splice(j, 1);
@@ -1161,8 +1162,8 @@ let musicFadeInterval = null;
 function fadeAudioIn() {
     if (musicFadeInterval) clearInterval(musicFadeInterval);
     musicFadeInterval = setInterval(() => {
-        if (bgMusic.volume < 0.7) {
-            bgMusic.volume = Math.min(bgMusic.volume + 0.01, 0.7);
+        if (bgMusic.volume < masterVolume * 0.7) {
+            bgMusic.volume = Math.min(bgMusic.volume + 0.01, masterVolume * 0.7);
         } else {
             clearInterval(musicFadeInterval);
             musicFadeInterval = null;
@@ -1173,10 +1174,10 @@ function fadeAudioIn() {
 function muteMusic() {
     if (musicFadeInterval) clearInterval(musicFadeInterval);
     musicFadeInterval = setInterval(() => {
-        if (bgMusic.volume > 0.15) {
-            bgMusic.volume = Math.max(bgMusic.volume - 0.05, 0.15);
+        if (bgMusic.volume > masterVolume * 0.15) {
+            bgMusic.volume = Math.max(bgMusic.volume - 0.05, masterVolume * 0.15);
         } else {
-            bgMusic.volume = 0.15;
+            bgMusic.volume = masterVolume * 0.15;
             clearInterval(musicFadeInterval);
             musicFadeInterval = null;
         }
@@ -1186,10 +1187,10 @@ function muteMusic() {
 function unmuteMusic() {
     if (musicFadeInterval) clearInterval(musicFadeInterval);
     musicFadeInterval = setInterval(() => {
-        if (bgMusic.volume < 0.7) {
-            bgMusic.volume = Math.min(bgMusic.volume + 0.05, 0.7);
+        if (bgMusic.volume < masterVolume * 0.7) {
+            bgMusic.volume = Math.min(bgMusic.volume + 0.05, masterVolume * 0.7);
         } else {
-            bgMusic.volume = 0.7;
+            bgMusic.volume = masterVolume * 0.7;
             clearInterval(musicFadeInterval);
             musicFadeInterval = null;
         }

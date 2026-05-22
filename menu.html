@@ -237,6 +237,41 @@ div.particle {
     border: 0.5px solid;
     padding: 4px 12px;
 }
+
+.volume-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    opacity: 0.6;
+}
+
+#volumeSlider {
+    width: 200px;
+    height: 1px;
+    background: rgba(255,255,255,0.3);
+    outline: none;
+    cursor: pointer;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+}
+
+#volumeSlider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    border: none;
+}
 </style>
 </head>
 
@@ -268,6 +303,12 @@ div.particle {
                 <div class="pu-pill" style="color:#88ccff; border-color:#88ccff;">⬤ Shield</div>
             </div>
         </div>
+
+        <div class="volume-control">
+            <div class="controls-title">Volume</div>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.7">
+        </div>
+
     </div>
 
     <div id="shop-panel" class="panel">
@@ -445,6 +486,14 @@ function playShopSound() {
     s.volume = 0.4;
     s.play().catch(() => {});
 }
+
+const savedVolume = sessionStorage.getItem('gameVolume') || '0.7';
+document.getElementById('volumeSlider').value = savedVolume;
+
+document.getElementById('volumeSlider').addEventListener('input', (e) => {
+    sessionStorage.setItem('gameVolume', e.target.value);
+    audio.volume = parseFloat(e.target.value) * 0.6;
+});
 </script>
 
 </body>
