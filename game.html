@@ -197,6 +197,10 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
+function getSpeedScale() {
+    return Math.min(canvas.width, 1920) / 1920;
+}
+
 const LEVELS = [
     { survive: 10, speedMult: 1.0, spawnInterval: 1500 },
     { survive: 15, speedMult: 1.3, spawnInterval: 1300 },
@@ -223,7 +227,7 @@ const bulletSizeLevel   = getUpgradeLevel('bulletSize');
 const dashCooldownLevel = getUpgradeLevel('dashCooldown');
 const moveSpeedLevel    = getUpgradeLevel('moveSpeed');
 
-const BULLET_SPEED  = 16 * (1 + bulletSpeedLevel * 0.3);
+const BULLET_SPEED = 16 * (1 + bulletSpeedLevel * 0.3) * getSpeedScale();
 const BULLET_RADIUS = 5  + bulletSizeLevel * 4;
 
 const keys = {};
@@ -251,10 +255,10 @@ const player = {
     y: window.innerHeight / 2,
     radius: 18,
     vx: 0, vy: 0,
-    acceleration: 0.5,
+    acceleration: 0.8 * getSpeedScale(),
     friction: 0.94,
-    maxSpeed: 10 + moveSpeedLevel * 2,
-    dashForce: 42,
+    maxSpeed: (10 + moveSpeedLevel * 2) * getSpeedScale(),
+    dashForce: 42 * getSpeedScale(),
     canDash: true,
     dashCooldown: 1000 - dashCooldownLevel * 150,
     lastDashTime: 0,
@@ -316,7 +320,7 @@ levelDisplay.textContent = "LEVEL: " + (currentLevel + 1);
 oxyDisplay.textContent   = "O₂: " + totalOxygen;
 
 function getEnemyBaseSpeed() {
-    return 1.5 * levelData.speedMult;
+    return 1.5 * levelData.speedMult * getSpeedScale();
 }
 
 function shootBullet() {
